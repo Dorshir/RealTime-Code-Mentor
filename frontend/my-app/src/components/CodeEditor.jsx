@@ -11,6 +11,7 @@ const CodeEditor = ({ value, onChange, readOnly }) => {
 //     setLines(value.split("\n"));
 //   }, [value]);
 
+
   // Function to handle textarea onChange event
   const handleChange = (e) => {
     const newValue = e.target.value;
