@@ -32,8 +32,10 @@ const configureSocket = (io) => {
     socket.on("code_update", (data) => {
       const { codeBlockId, newCode } = data;
       const session = codeBlockSessions[codeBlockId];
-      session.code = newCode;
-      io.to(codeBlockId).emit("code_update", newCode);
+      if (session) {
+        session.code = newCode;
+        io.to(codeBlockId).emit("code_update", newCode);
+      }
     });
 
     socket.on("disconnect", () => {
