@@ -1,4 +1,3 @@
-// socket.js
 const configureSocket = (io) => {
   const codeBlockSessions = {};
 

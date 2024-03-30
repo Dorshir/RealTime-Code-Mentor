@@ -6,7 +6,9 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import Smiley from "./Smiley";
 
-const socket = io(import.meta.env.VITE_REACT_APP_BASE_URL);
+const socket = io(import.meta.env.VITE_REACT_APP_BASE_URL, {
+  transports: ["websocket", "polling"],
+});
 
 const CodeBlockPage = () => {
   const { id } = useParams();
@@ -91,7 +93,16 @@ const CodeBlockPage = () => {
           <React.Fragment key={index}>
             {index % 2 === 0 && <p>Example {Math.floor(index / 2) + 1}:</p>}{" "}
             {/* Increment example index */}
-            <p style={{ fontWeight: "bold", marginLeft: "30px" , marginTop: 0, marginBottom: 0}}>{example}</p>
+            <p
+              style={{
+                fontWeight: "bold",
+                marginLeft: "30px",
+                marginTop: 0,
+                marginBottom: 0,
+              }}
+            >
+              {example}
+            </p>
             {(index + 1) % 2 === 0 &&
               index !== codeBlock["i/o examples"].length - 1 && (
                 <hr style={{ marginTop: "20px" }} />
