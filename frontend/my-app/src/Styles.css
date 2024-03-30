@@ -152,7 +152,6 @@ body {
   font-family: monospace;
   text-align: center;
   background-color: #f8f8ff;
-  padding: 30px;
   font-weight: bold;
 }
 
@@ -161,6 +160,7 @@ body {
   text-align: center;
   background-color: #f8f8ff;
   padding: 30px;
+  border-radius: 20px;
 }
 
 .lobby-container {
