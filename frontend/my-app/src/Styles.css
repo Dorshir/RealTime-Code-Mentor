@@ -81,7 +81,6 @@ body {
   height: 500px;
   display: flex;
   flex-direction: row;
-  word-wrap: break-word;
 }
 
 .code-content {
@@ -96,7 +95,7 @@ body {
 
 .code-highlighter {
   width: 100%;
-  height: 159%;
+  /* height: 159%; */
   background: transparent;
   pointer-events: auto;
   margin: 0;
