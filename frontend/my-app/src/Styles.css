@@ -95,7 +95,6 @@ body {
 
 .code-highlighter {
   width: 100%;
-  /* height: 100%; */
   height: 159%;
   background: transparent;
   pointer-events: auto;
@@ -164,11 +163,18 @@ body {
   padding: 30px;
 }
 
-.centered-list-items {
+.lobby-container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 200px;
 }
 
 .code-container {

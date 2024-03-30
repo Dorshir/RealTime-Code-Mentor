@@ -1,11 +1,9 @@
 import React from "react";
 
-const Smiley = ({ onClose }) => {
+const Smiley = () => {
   return (
     <div className="smiley-container">
-      <div className="smiley" onClick={onClose}>
-        😊
-      </div>
+      <div className="smiley">😊</div>
     </div>
   );
 };
