@@ -12,7 +12,7 @@ const CodeEditor = ({ value, onChange, readOnly }) => {
   // Debounce the handleChange function
   const debouncedOnChange = debounce((newValue) => {
     onChange(newValue);
-  }, 300); // Adjust debounce delay as needed
+  }, 300); 
 
   // Update textarea content and lines state when value prop changes
   useEffect(() => {
