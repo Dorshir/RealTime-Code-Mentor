@@ -234,3 +234,28 @@ body {
   color: white;
   cursor: default;
 }
+
+/* For small screens */
+@media (max-width: 767px) {
+  .background-overlay {
+    width: 46%;
+  }
+
+  .code-editor-container {
+    display: flex;
+  }
+
+  .code-content {
+    position: relative;
+    width: auto;
+  }
+
+  .code-highlighter {
+    width: auto;
+  }
+
+  .code-description {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
