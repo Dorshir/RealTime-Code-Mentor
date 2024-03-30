@@ -29,7 +29,10 @@ const CodeBlockItem = ({ id, title }) => {
       to={`/code-block/${id}`}
       className="code-block-item"
       sx={{
-        marginBottom: "10px",
+        paddingLeft: "4px",
+        paddingRight: "4px",
+        paddingTop: "0.1px",
+        marginBottom: "8px",
         borderRadius: "25px",
         "&:hover": {
           backgroundColor: randomColor, //Colorful hover effect
