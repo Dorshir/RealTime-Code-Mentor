@@ -236,7 +236,7 @@ body {
 }
 
 /* For small screens */
-@media (max-width: 767px) {
+@media (max-width: 820px) {
   .background-overlay {
     width: 46%;
   }
@@ -256,6 +256,8 @@ body {
 
   .code-description {
     padding: 10px;
-    font-size: 14px;
+    font-size: 12px;
   }
 }
+
+
