@@ -4,7 +4,6 @@ import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 import { configureSocket } from "./socket.js"
-
 dotenv.config();
 
 const app = express();
@@ -15,10 +14,10 @@ const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN;
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  cors: {
-    origin: CLIENT_ORIGIN,
-    methods: ["GET", "POST"],
-  },
+  // cors: {
+  //   origin: CLIENT_ORIGIN,
+  //   methods: ["GET", "POST"],
+  // },
 });
 
 configureSocket(io);
