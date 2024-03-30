@@ -51,9 +51,7 @@ const CodeBlockPage = () => {
 
   const handleCodeChange = (newCode) => {
     setEditorValue(newCode);
-    if (!isMentor) {
-      socket.emit("code_update", { codeBlockId: id, newCode });
-    }
+    socket.emit("code_update", { codeBlockId: id, newCode });
   };
 
   return (

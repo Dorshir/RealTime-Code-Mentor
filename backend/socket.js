@@ -32,12 +32,8 @@ const configureSocket = (io) => {
     socket.on("code_update", (data) => {
       const { codeBlockId, newCode } = data;
       const session = codeBlockSessions[codeBlockId];
-
-      // Only allow students to update the code
-      if (session && session.students.has(socket.id)) {
-        session.code = newCode;
-        io.to(codeBlockId).emit("code_update", newCode);
-      }
+      session.code = newCode;
+      io.to(codeBlockId).emit("code_update", newCode);
     });
 
     socket.on("disconnect", () => {

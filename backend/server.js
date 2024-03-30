@@ -9,12 +9,7 @@ dotenv.config();
 const app = express();
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send("GET request to the homepage");
-});
-
 const PORT = process.env.PORT;
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN;
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -22,6 +17,7 @@ const io = new Server(httpServer, {
     origin: "*",
     methods: ["GET", "POST"],
   },
+  transports: ["websocket"],
 });
 
 configureSocket(io);
