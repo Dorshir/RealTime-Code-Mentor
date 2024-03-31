@@ -26,8 +26,8 @@ const LobbyPage = () => {
   }, []);
 
   return (
-    <div>
-      <IconBreadCrumbs />
+    <div >
+      <IconBreadCrumbs/>
       <div className="lobby-container">
         <Typography variant="h4" className="choose-code-block">
           Choose Code Task

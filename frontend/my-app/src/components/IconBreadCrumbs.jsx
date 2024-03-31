@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import HomeIcon from "@mui/icons-material/Home";
-import WhatshotIcon from "@mui/icons-material/Whatshot";
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 
 function IconBreadCrumbs({ id, codeBlock }) {
   return (
@@ -24,7 +24,7 @@ function IconBreadCrumbs({ id, codeBlock }) {
             sx={{ display: "flex", alignItems: "center" }}
             color="inherit"
           >
-            <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            <AssignmentRoundedIcon sx={{ mr: 0.5 }} fontSize="inherit" />
             <Typography sx={{ cursor: "default" }}>
               {codeBlock?.title}
             </Typography>
