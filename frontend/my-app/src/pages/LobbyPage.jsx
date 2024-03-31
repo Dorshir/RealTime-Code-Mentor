@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Typography, List, CircularProgress } from "@mui/material";
 import fetchCodeBlocksFromFirebase from "../utils/fetchCodeBlocksFromFirebase";
 import CodeBlockItem from "../components/CodeBlockItem";
+import IconBreadCrumbs from "../components/IconBreadCrumbs";
 import "../Styles.css";
 
 const LobbyPage = () => {
@@ -25,24 +26,27 @@ const LobbyPage = () => {
   }, []);
 
   return (
-    <div className="lobby-container">
-      <Typography variant="h4" className="choose-code-block">
-        Choose Code Task
-      </Typography>
-      {/* Conditionally render a loading spinner if codeBlocks is null */}
-      {codeBlocks === null ? (
-        <div className="loading-container">
-          <CircularProgress />
-        </div>
-      ) : (
-        // Render the list of code blocks if codeBlocks is not null
-        <List>
-          {codeBlocks.map((block) => (
-            // Render a CodeBlockItem component for each code block
-            <CodeBlockItem key={block.id} id={block.id} title={block.title} />
-          ))}
-        </List>
-      )}
+    <div>
+      <IconBreadCrumbs />
+      <div className="lobby-container">
+        <Typography variant="h4" className="choose-code-block">
+          Choose Code Task
+        </Typography>
+        {/* Conditionally render a loading spinner if codeBlocks is null */}
+        {codeBlocks === null ? (
+          <div className="loading-container">
+            <CircularProgress />
+          </div>
+        ) : (
+          // Render the list of code blocks if codeBlocks is not null
+          <List>
+            {codeBlocks.map((block) => (
+              // Render a CodeBlockItem component for each code block
+              <CodeBlockItem key={block.id} id={block.id} title={block.title} />
+            ))}
+          </List>
+        )}
+      </div>
     </div>
   );
 };

@@ -123,12 +123,6 @@ body {
   outline: none;
 }
 
-.user-role {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-}
-
 .choose-code-block {
   padding-bottom: 40px;
 }
@@ -195,10 +189,6 @@ body {
   padding: 20px;
 }
 
-.user-role {
-  padding: 20px;
-}
-
 .code-description {
   padding: 20px;
   word-wrap: break-word;
@@ -206,6 +196,14 @@ body {
   text-align: left;
   font-size: 17px;
   padding-bottom: 0;
+}
+
+.user-role {
+  top: 0%;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  margin-top: 5px;
 }
 
 .user-role span {

@@ -6,6 +6,7 @@ import { db } from "../config/firebase";
 import CodeBlockDetails from "../components/CodeBlockDetails";
 import CodeBlockEditor from "../components/CodeBlockEditor";
 import Smiley from "../components/Smiley";
+import IconBreadCrumbs from "../components/IconBreadCrumbs";
 
 // Initialize socket connection
 const socket = io(import.meta.env.VITE_REACT_APP_BASE_URL);
@@ -13,7 +14,7 @@ const socket = io(import.meta.env.VITE_REACT_APP_BASE_URL);
 const CodeBlockPage = () => {
   // Retrieve code block ID from URL params
   const { id } = useParams();
-  
+
   // State variables to manage code block data
   const [codeBlock, setCodeBlock] = useState(null);
   const [editorValue, setEditorValue] = useState("");
@@ -103,14 +104,27 @@ const CodeBlockPage = () => {
 
   // Render the code block page UI
   return (
-    <div className="code-container">
-      {showSmiley && <Smiley />} {/* Render smiley if showSmiley is true */}
-      <CodeBlockDetails codeBlock={codeBlock} isMentor={isMentor} />
-      <CodeBlockEditor
-        value={editorValue}
-        onChange={handleCodeChange}
-        readOnly={isMentor}
-      />
+    <div>
+      <div style={{ display: "flex", position: "relative" }}>
+        <p className="user-role">
+          <span
+            style={{
+              backgroundColor: isMentor ? "blue" : "green",
+            }}
+          ></span>
+          {isMentor ? "Mentor" : "Student"}
+        </p>
+        <IconBreadCrumbs id={id} codeBlock={codeBlock} />
+      </div>
+      <div className="code-container">
+        {showSmiley && <Smiley />} {/* Render smiley if showSmiley is true */}
+        <CodeBlockDetails codeBlock={codeBlock} isMentor={isMentor} />
+        <CodeBlockEditor
+          value={editorValue}
+          onChange={handleCodeChange}
+          readOnly={isMentor}
+        />
+      </div>
     </div>
   );
 };

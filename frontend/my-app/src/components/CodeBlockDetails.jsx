@@ -2,11 +2,7 @@ import React, { Fragment } from "react";
 import "../Styles.css";
 
 const CodeBlockDetails = ({ codeBlock, isMentor }) => {
-  /**
-   * Function to render examples of the code block.
-   * Renders each example with its index and a horizontal rule.
-   * @returns {JSX.Element} - JSX element containing rendered examples.
-   */
+  //Function to render examples of the code block.
   const renderExamples = () => {
     return (
       <div className="code-description">
@@ -37,14 +33,6 @@ const CodeBlockDetails = ({ codeBlock, isMentor }) => {
   return (
     <div className="code-details">
       <h1 className="code-title">{codeBlock?.title}</h1>
-      <p className="user-role">
-        <span
-          style={{
-            backgroundColor: isMentor ? "blue" : "green",
-          }}
-        ></span>
-        {isMentor ? "Mentor" : "Student"}
-      </p>
       <div className="code-description">{codeBlock?.details}</div>
       {renderExamples()}
     </div>
