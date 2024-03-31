@@ -43,8 +43,8 @@ const configureSocket = (io) => {
       if (session) {
         // Update the code for the corresponding code block session
         session.code = newCode;
-        // Broadcast the new code to all clients in the session
-        io.to(codeBlockId).emit("code_update", newCode);
+        // Emit the new code to all clients in the session except the emitting client
+        socket.to(codeBlockId).emit("code_update", newCode);
       }
     });
 

@@ -95,7 +95,7 @@ body {
 
 .code-highlighter {
   width: 100%;
-  /* height: 159%; */
+  height: 159%;
   background: transparent;
   pointer-events: auto;
   margin: 0;
