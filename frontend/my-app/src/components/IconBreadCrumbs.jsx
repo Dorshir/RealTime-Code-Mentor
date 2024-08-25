@@ -14,6 +14,7 @@ function IconBreadCrumbs({ id, codeBlock }) {
           sx={{ display: "flex", alignItems: "center" }}
           color="inherit"
           href="/"
+          title="Home"
         >
           <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
           Home

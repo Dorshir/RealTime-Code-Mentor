@@ -30,6 +30,14 @@ const configureSocket = (io) => {
           // Emit role assigned as student and send initial code to the student
           socket.emit("role_assigned", "student");
           socket.emit("initial_code", session.code);
+          socket.emit(
+            "on_block",
+            codeBlockSessions[codeBlockId].connectedClients.size
+          );
+        } else {
+          // Emit role assigned as mentor and send initial code to the student
+          socket.emit("role_assigned", "mentor");
+          socket.emit("initial_code", session.code);
         }
       }
       // Join the socket to the code block room
@@ -48,23 +56,50 @@ const configureSocket = (io) => {
       }
     });
 
-    // Handle disconnect events
+    // Add a new event listener for user leaving the page
+    socket.on("leaving_page", (codeBlockId) => {
+      console.log("A user left");
+      handleUserLeaving(socket, codeBlockId);
+    });
+
+    // Modify your disconnect handler
     socket.on("disconnect", () => {
       console.log("A user disconnected");
-      // Clean up the codeBlockSessions when users disconnect
-      Object.keys(codeBlockSessions).forEach((codeBlockId) => {
-        const session = codeBlockSessions[codeBlockId];
+      handleUserLeaving(socket);
+    });
+  });
+
+  // Function to handle user leaving (either by navigating away or disconnecting)
+  function handleUserLeaving(socket, codeBlockId = null) {
+    if (codeBlockId) {
+      // If codeBlockId is provided, only clean up that specific session
+      const session = codeBlockSessions[codeBlockId];
+      if (session) {
         if (session.mentor === socket.id) {
-          // If the disconnected user is the mentor, delete the entire sessio
-          delete codeBlockSessions[codeBlockId];
+          session.mentor = -1;
         } else {
-          // If the disconnected user is a student, remove them from the session
           session.students.delete(socket.id);
           session.connectedClients.delete(socket.id);
         }
+        if (session.connectedClients.size === 0 && session.mentor === -1)
+          delete codeBlockSessions[codeBlockId];
+      }
+    } else {
+      // If no codeBlockId is provided, clean up all sessions for this socket
+      Object.keys(codeBlockSessions).forEach((id) => {
+        const session = codeBlockSessions[id];
+        if (session.mentor === socket.id) {
+          // Notify other users in the session
+          socket.to(id).emit("mentor_left", socket.id);
+        } else {
+          session.students.delete(socket.id);
+        }
+
+        session.connectedClients.delete(socket.id);
+        if (session.connectedClients.size === 0) delete codeBlockSessions[id];
       });
-    });
-  });
+    }
+  }
 };
 
 export { configureSocket };

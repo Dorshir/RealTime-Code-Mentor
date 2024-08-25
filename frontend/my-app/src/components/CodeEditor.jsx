@@ -45,6 +45,7 @@ const CodeEditor = ({ value, onChange, readOnly }) => {
           className="code-textarea"
           readOnly={readOnly}
           value={value}
+          style={readOnly ? { cursor: "default" } : null}
         />
       </div>
     </div>

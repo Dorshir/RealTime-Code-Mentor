@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import io from "socket.io-client";
 import { doc, getDoc } from "firebase/firestore";
@@ -7,22 +7,31 @@ import CodeBlockDetails from "../components/CodeBlockDetails";
 import CodeBlockEditor from "../components/CodeBlockEditor";
 import Smiley from "../components/Smiley";
 import IconBreadCrumbs from "../components/IconBreadCrumbs";
-
-// Initialize socket connection
-const socket = io(import.meta.env.VITE_REACT_APP_BASE_URL);
+import Notification from "../components/Notification";
+import { Snackbar, Alert } from "@mui/material";
 
 const CodeBlockPage = () => {
-  // Retrieve code block ID from URL params
   const { id } = useParams();
-
-  // State variables to manage code block data
   const [codeBlock, setCodeBlock] = useState(null);
   const [editorValue, setEditorValue] = useState("");
   const [isMentor, setIsMentor] = useState(false);
+  const [roleAssigned, setRoleAssigned] = useState(false);
   const [showSmiley, setShowSmiley] = useState(false);
   const [processedSolution, setProcessedSolution] = useState("");
+  const [socket, setSocket] = useState(null);
+  const [notification, setNotification] = useState(null);
 
-  // Effect to fetch code block data from Firebase
+  useEffect(() => {
+    // Create and set the socket connection upon component mount
+    const newSocket = io(import.meta.env.VITE_REACT_APP_BASE_URL);
+    setSocket(newSocket);
+
+    return () => {
+      // Disconnect socket when component unmounts
+      newSocket.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     const fetchCodeBlock = async () => {
       try {
@@ -41,42 +50,56 @@ const CodeBlockPage = () => {
     };
 
     fetchCodeBlock();
+  }, [id, db]);
 
-    // Join socket room for the code block
-    socket.emit("join_code_block", id);
+  useEffect(() => {
+    if (socket) {
+      socket.emit("join_code_block", id);
 
-    // Listen for role assignment from socket
-    socket.on("role_assigned", (role) => {
-      setIsMentor(role === "mentor");
-    });
+      socket.on("role_assigned", (role) => {
+        setIsMentor(role === "mentor");
+        setRoleAssigned(true);
+      });
 
-    // Listen for code updates from socket
-    socket.on("code_update", (newCode) => {
-      setEditorValue(newCode);
-    });
+      socket.on("code_update", (newCode) => {
+        setEditorValue(newCode);
+      });
 
-    // Cleanup function to remove event listeners
-    return () => {
-      socket.off("role_assigned");
-      socket.off("code_update");
-    };
-  }, [id]);
+      socket.on("mentor_left", () => {
+        setNotification("The mentor has left the session.");
+        setIsMentor(false);
+      });
 
-  // Effect to preprocess solution code when code block changes
+      const handleBeforeUnload = (event) => {
+        event.preventDefault();
+        event.returnValue = "";
+        socket.emit("leaving_page", id);
+      };
+
+      window.addEventListener("beforeunload", handleBeforeUnload);
+
+      // Cleanup function to remove event listeners
+      return () => {
+        socket.off("mentor_left");
+        socket.off("role_assigned");
+        socket.off("code_update");
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      };
+    }
+  }, [socket, id]);
+
   useEffect(() => {
     if (codeBlock?.solution) {
       setProcessedSolution(preprocessCode(codeBlock.solution));
     }
   }, [codeBlock?.solution]);
 
-  // Effect to manage smiley display with timeout
   useEffect(() => {
     if (showSmiley) {
       return showSmileyWithTimeout();
     }
   }, [showSmiley]);
 
-  // Function to display smiley for 5 seconds
   const showSmileyWithTimeout = () => {
     setShowSmiley(true);
     const timeout = setTimeout(() => {
@@ -85,7 +108,6 @@ const CodeBlockPage = () => {
     return () => clearTimeout(timeout);
   };
 
-  // Function to handle code change
   const handleCodeChange = (newCode) => {
     setEditorValue(newCode);
     socket.emit("code_update", { codeBlockId: id, newCode });
@@ -97,26 +119,45 @@ const CodeBlockPage = () => {
     }
   };
 
-  // Function to preprocess code by removing unnecessary characters
   const preprocessCode = (code) => {
     return code.replace(/[ ;\n]+/g, "");
+  };
+
+  const handleCloseNotification = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setNotification(null);
   };
 
   // Render the code block page UI
   return (
     <div>
       <div style={{ display: "flex", position: "relative" }}>
-        <p className="user-role">
-          <span
-            style={{
-              backgroundColor: isMentor ? "blue" : "green",
-            }}
-          ></span>
-          {isMentor ? "Mentor" : "Student"}
-        </p>
+        {roleAssigned && (
+          <p className="user-role">
+            <span
+              style={{ backgroundColor: isMentor ? "blue" : "green" }}
+            ></span>
+            {isMentor ? "Mentor" : "Student"}
+          </p>
+        )}
         <IconBreadCrumbs id={id} codeBlock={codeBlock} />
       </div>
       <div className="code-container">
+        <Snackbar
+          open={!!notification}
+          onClose={handleCloseNotification}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={handleCloseNotification}
+            severity="info"
+            sx={{ width: "100%" }}
+          >
+            {notification}
+          </Alert>
+        </Snackbar>
         {showSmiley && <Smiley />} {/* Render smiley if showSmiley is true */}
         <CodeBlockDetails codeBlock={codeBlock} isMentor={isMentor} />
         <CodeBlockEditor
