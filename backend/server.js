@@ -10,8 +10,15 @@ dotenv.config();
 // Create an Express app
 const app = express();
 
-// Enable CORS middleware
-app.use(cors());
+// Define the allowed origin
+const allowedOrigin = 'https://realtime-code-mentor-1.onrender.com';
+
+// Enable CORS middleware for Express with specific origin
+app.use(cors({
+  origin: allowedOrigin,
+  methods: ['GET', 'POST'],  // You can add more methods if needed
+  credentials: true          // If credentials are needed
+}));
 
 // Get the port number from environment variables
 const PORT = process.env.PORT;
@@ -19,11 +26,12 @@ const PORT = process.env.PORT;
 // Create an HTTP server using Express app
 const httpServer = createServer(app);
 
-// Create a new instance of Socket.IO server
+// Create a new instance of Socket.IO server with specific CORS settings
 const io = new Server(httpServer, {
   cors: {
-    origin: "*", // Allow connections from any origin
-    methods: ["GET", "POST"], // Allow GET and POST methods
+    origin: allowedOrigin, // Match the allowed origin
+    methods: ["GET", "POST"], // Match the methods
+    credentials: true // Necessary if cookies or authentication are used
   },
 });
 
