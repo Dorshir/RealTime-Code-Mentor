@@ -4,8 +4,7 @@ This project is an online coding web application that allows mentors to share co
 
 ## Deployment
 
-The project is deployed on Render. You can access the deployed static site <a href="https://realtime-code-mentor-1.onrender.com" target="_blank" rel="noopener noreferrer">here</a>.
-
+The project is deployed on Render. You can access the deployed static site [here](https://realtime-code-mentor-1.onrender.com/).
 
 ## Features
 
